@@ -1,9 +1,11 @@
-name: Test & Validations
+name: Check
 
 on:
   push:
     branches:
       - "**"
+  workflow_call:
+
 jobs:
   format:
     name: fmt
@@ -15,7 +17,7 @@ jobs:
         uses: dtolnay/rust-toolchain@1.67.0
         with:
           components: rustfmt
-      - name: Check formatting
+      - name: Formatting
         run: |
           cargo fmt --all -- --check
   clippy:
@@ -28,7 +30,7 @@ jobs:
         uses: dtolnay/rust-toolchain@1.67.0
         with:
           components: clippy
-      - name: Check the lints
+      - name: Lints
         run: |
           cargo clippy -- -D warnings
   test:
@@ -42,5 +44,3 @@ jobs:
       - name: Unit Test
         run: |
           cargo test
-        env:
-          RUST_BACKTRACE: 1

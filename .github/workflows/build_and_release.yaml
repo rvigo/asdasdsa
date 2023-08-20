@@ -9,49 +9,12 @@ on:
       - "v*"
 
 jobs:
-  format:
-    name: fmt
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Install toolchain
-        uses: dtolnay/rust-toolchain@1.67.0
-        with:
-          components: rustfmt
-      - name: Check formatting
-        run: |
-          cargo fmt --all -- --check
-  clippy:
-    name: clippy
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Install toolchain
-        uses: dtolnay/rust-toolchain@1.67.0
-        with:
-          components: clippy
-      - name: Check the lints
-        run: |
-          cargo clippy -- -D warnings
-  test:
-    name: test
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Install toolchain
-        uses: dtolnay/rust-toolchain@1.67.0
-      - name: Unit Test
-        run: |
-          cargo test
-        env:
-          RUST_BACKTRACE: 1
+  check:
+    name: Check
+    uses: rvigo/asdasdsa/.github/workflows/check.yaml@main
 
   build:
-    name: Build and release
-    needs: [format, clippy, test]
+    name: Build
     runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
@@ -79,8 +42,6 @@ jobs:
           targets: ${{ matrix.target }}
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       - name: Build
         run: |
           if [ ${{ matrix.os }} == 'ubuntu' ]; then
@@ -96,13 +57,12 @@ jobs:
           path: target/${{ matrix.target }}/release/
 
   release:
+    name: Release
     needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       - name: Download darwin_arm64
         uses: actions/download-artifact@v3
         with:
