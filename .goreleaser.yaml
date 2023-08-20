@@ -42,6 +42,8 @@ brews:
 checksum:
   name_template: "checksums.txt"
 release:
+  mode: append
+  make_latest: true
   github:
     owner: rvigo
     name: asdasdsa
