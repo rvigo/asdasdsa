@@ -73,11 +73,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Download darwin_arm64
+      - name: Download ${{ matrix.target }}
         uses: actions/download-artifact@v3
         with:
           name: ${{ matrix.target }}
-          path: target/${{ matrix.tatget }}/release/
+          path: target/${{ matrix.target }}/release/
       - name: Set up Go
         uses: actions/setup-go@v3
       - name: Release binaries
