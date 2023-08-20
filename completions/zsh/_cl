@@ -1,0 +1,109 @@
+#compdef _cl cl
+
+# you must ensure that "site-functions" is present in $FPATH
+_cl() {
+    local line
+    typeset -A opt_args
+    
+    _arguments -C \
+    "-h[Show help]" \
+    "1:command:_cl_subcommands" \
+    "*::options:->options"
+    
+    case $line[1] in
+        exec)
+            _cl_aliases
+        ;;
+        share)
+            _cl_share
+        ;;
+        config)
+            _cl_config
+        ;;
+    esac
+}
+
+_cl_subcommands() {
+    local -a commands
+    commands=(
+        'exec:Run your commands via CLI'
+        'share:Import/Export aliases'
+        'config:Configure your app'
+    )
+    
+    _describe 'command' commands
+}
+
+_cl_config() {
+    local line
+    typeset -A opt_args
+    
+    _arguments -C \
+    "1:config_subcommand:_cl_config_subcommands" \
+    "*::options:->options" \
+    {-q,--quiet-mode}="[Set the quiet mode]" \
+    {-l,--log-level}="[Set the log level]" \
+    {-H,--highlitght-matches}="[Set the highlight matches mode]"
+    
+    case $line[1] in
+        zsh-widget)
+            _cl_config_zsh_widget
+        ;;
+    esac
+}
+
+_cl_config_subcommands() {
+    local -a config_subcommands
+    config_subcommands=(
+        'zsh-widget:Zsh widget config'
+    )
+    
+    _describe 'config_subcommand' config_subcommands
+}
+
+_cl_config_zsh_widget(){
+    _arguments -C \
+    {-i,--install}="[Install the zsh widget]"
+}
+_cl_exec() {
+    _arguments -C \
+    {-n,--namespace}="[The namespace in case of duplicated aliases]" \
+    {-d,--dry-run}="[Dry run mode]" \
+    {-q,--quiet}="[Quiet mode]" \
+    "1:alias:_cl_aliases"
+}
+
+_cl_share() {
+    local curcontext="$curcontext" line state
+    typeset -A opt_args
+    
+    _arguments -C \
+    "-n[The namespace(s) to be imported from/exported to file]" \
+    "-f[The location of the file to be imported from/exported to]" \
+    ":mode:_cl_share_modes"
+}
+
+_cl_share_modes() {
+    local -a modes
+    modes=(
+        'import'
+        'export'
+    )
+    
+    _describe 'mode' modes
+}
+
+_cl_aliases() {
+    local -a words lines
+    # removes everything until the first dot (including the dot): sed '/\..*/s/^[^.]*\.//'
+    # removes everything after the first colon (including the conlon): sed 's/:.*$//'
+    # removes everything after the --> (including the -->): sed 's/-->.*$//'
+    # trim leading and trailing spaces: sed 's/ *$//g'
+    
+    lines=(${(f)"$(cl misc)"})
+    for line in $lines; do
+        words+="$(echo $line | sed -e '/\..*/s/^[^.]*\.//;s/:.*$//;s/-->.*$//;s/ *$//g')"
+    done
+    
+    compadd -l -d lines -a words
+}
