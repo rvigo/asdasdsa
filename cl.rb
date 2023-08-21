@@ -7,46 +7,25 @@ class Cl < Formula
 with a lot of args commands in an organized and human readable place
 "
   homepage "https://github.com/rvigo/asdasdsa"
-  version "1.0.3"
+  version "1.0.6"
+  depends_on :macos
 
   on_macos do
+    url "https://github.com/rvigo/asdasdsa/releases/download/v1.0.6/cl_1.0.6_darwin_amd64.tar.gz"
+    sha256 "cdd78ff6de853182ed6f923dbbf9e259ae971a5fddb86688452b1f3e8e83f3c5"
+
+    def install
+      bin.install "cl"
+      zsh_completion.install "completions/zsh/_cl" => "_cl"
+    end
+
     if Hardware::CPU.arm?
-      url "https://github.com/rvigo/asdasdsa/releases/download/v1.0.3/cl_1.0.3_darwin_arm64.tar.gz"
-      sha256 "55a39b58dfddd38fdf16892089b0fa4024a14c2de366d0e37446f545bfec630c"
-
-      def install
-        bin.install "cl"
-        zsh_completion.install "completions/zsh/_cl" => "_cl"
-      end
-    end
-    if Hardware::CPU.intel?
-      url "https://github.com/rvigo/asdasdsa/releases/download/v1.0.3/cl_1.0.3_darwin_amd64.tar.gz"
-      sha256 "29f76e8aa7cfbe12679e0d9a285b02ea182d8600386b134969e7fec0d3437a6d"
-
-      def install
-        bin.install "cl"
-        zsh_completion.install "completions/zsh/_cl" => "_cl"
-      end
-    end
-  end
-
-  on_linux do
-    if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-      url "https://github.com/rvigo/asdasdsa/releases/download/v1.0.3/cl_1.0.3_linux_arm64.tar.gz"
-      sha256 "0036ba6ec9d65a7fae16e54f29461c4164dd0ba5d7855cc2178fd2d2b4159944"
-
-      def install
-        bin.install "cl"
-        zsh_completion.install "completions/zsh/_cl" => "_cl"
-      end
-    end
-    if Hardware::CPU.intel?
-      url "https://github.com/rvigo/asdasdsa/releases/download/v1.0.3/cl_1.0.3_linux_amd64.tar.gz"
-      sha256 "1eb34f2ee40eb6b6ef43e2a145a00fb65261316ae25cb6da301600dc2fd91717"
-
-      def install
-        bin.install "cl"
-        zsh_completion.install "completions/zsh/_cl" => "_cl"
+      def caveats
+        <<~EOS
+          The darwin_arm64 architecture is not supported for the Cl
+          formula at this time. The darwin_amd64 binary may work in compatibility
+          mode, but it might not be fully supported.
+        EOS
       end
     end
   end
