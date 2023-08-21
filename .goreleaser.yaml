@@ -2,12 +2,6 @@ project_name: cl
 builds:
   - env:
       - CGO_ENABLED=0
-    goos:
-      - linux
-      - darwin
-    goarch:
-      - amd64
-      - arm64
     main: .github/utils/dummy.go
     binary: cl
     hooks:
@@ -29,7 +23,7 @@ brews:
       If not, add the following line to your ~/.zshrc, BEFORE any call to compinit:
       FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
     homepage: https://github.com/rvigo/asdasdsa
-    tap:
+    repository:
       owner: rvigo
       name: asdasdsa
     commit_author:
