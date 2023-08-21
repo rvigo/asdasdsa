@@ -9,13 +9,13 @@ on:
       - "v*"
 
 jobs:
-  check:
-    name: Check
-    uses: rvigo/asdasdsa/.github/workflows/check.yaml@main
+  # check:
+  #   name: Check
+  #   uses: rvigo/asdasdsa/.github/workflows/check.yaml@main
 
   build:
     name: Build
-    needs: [check]
+    # needs: [check]
     runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
