@@ -43,7 +43,6 @@ jobs:
           targets: ${{ matrix.target }}
       - name: Cache Cargo
         uses: Swatinem/rust-cache@v2
-
       - name: Checkout
         uses: actions/checkout@v3
       - name: Build
@@ -79,9 +78,9 @@ jobs:
             goarch: x86-64
           - goos: unknown-linux-gnu
             goarch: aarch64
-          - goos: apple-darwin
+          - goos: darwin
             goarch: x86-64
-          - goos: apple-darwin
+          - goos: darwin
             goarch: aarch64
     steps:
       - name: Checkout
@@ -102,6 +101,6 @@ jobs:
         uses: goreleaser/goreleaser-action@v4
         with:
           version: latest
-          args: release
+          args: release --skip-validate
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
