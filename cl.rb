@@ -10,18 +10,18 @@ with a lot of args commands in an organized and human readable place
   version "1.0.3"
 
   on_macos do
-    if Hardware::CPU.intel?
-      url "https://github.com/rvigo/asdasdsa/releases/download/v1.0.3/cl_1.0.3_darwin_amd64.tar.gz"
-      sha256 "4f50b28345924952d4ebb18ba9a814626bb692b7742e54a7f6d7a393b07a83ce"
+    if Hardware::CPU.arm?
+      url "https://github.com/rvigo/asdasdsa/releases/download/v1.0.3/cl_1.0.3_darwin_arm64.tar.gz"
+      sha256 "55a39b58dfddd38fdf16892089b0fa4024a14c2de366d0e37446f545bfec630c"
 
       def install
         bin.install "cl"
         zsh_completion.install "completions/zsh/_cl" => "_cl"
       end
     end
-    if Hardware::CPU.arm?
-      url "https://github.com/rvigo/asdasdsa/releases/download/v1.0.3/cl_1.0.3_darwin_arm64.tar.gz"
-      sha256 "c205d810689de5f5fb759979efb7982ce2c739cf5e05afb2128b8d1210091835"
+    if Hardware::CPU.intel?
+      url "https://github.com/rvigo/asdasdsa/releases/download/v1.0.3/cl_1.0.3_darwin_amd64.tar.gz"
+      sha256 "29f76e8aa7cfbe12679e0d9a285b02ea182d8600386b134969e7fec0d3437a6d"
 
       def install
         bin.install "cl"
@@ -31,18 +31,18 @@ with a lot of args commands in an organized and human readable place
   end
 
   on_linux do
-    if Hardware::CPU.intel?
-      url "https://github.com/rvigo/asdasdsa/releases/download/v1.0.3/cl_1.0.3_linux_amd64.tar.gz"
-      sha256 "a1ea06f68d4f3f87e7a599fd486ffe5ce1eac686fb88636a3be8efb643947563"
+    if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+      url "https://github.com/rvigo/asdasdsa/releases/download/v1.0.3/cl_1.0.3_linux_arm64.tar.gz"
+      sha256 "0036ba6ec9d65a7fae16e54f29461c4164dd0ba5d7855cc2178fd2d2b4159944"
 
       def install
         bin.install "cl"
         zsh_completion.install "completions/zsh/_cl" => "_cl"
       end
     end
-    if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-      url "https://github.com/rvigo/asdasdsa/releases/download/v1.0.3/cl_1.0.3_linux_arm64.tar.gz"
-      sha256 "87e91fdfd5784567d6cb0f7177e0a55462b0cd2f8734044c700f8a5373d50cff"
+    if Hardware::CPU.intel?
+      url "https://github.com/rvigo/asdasdsa/releases/download/v1.0.3/cl_1.0.3_linux_amd64.tar.gz"
+      sha256 "1eb34f2ee40eb6b6ef43e2a145a00fb65261316ae25cb6da301600dc2fd91717"
 
       def install
         bin.install "cl"
