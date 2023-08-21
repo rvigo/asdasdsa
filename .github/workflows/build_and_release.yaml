@@ -56,6 +56,7 @@ jobs:
         with:
           name: cl-${{ matrix.target }}
           path: target/${{ matrix.target }}/release/
+          retention-days: 1
 
   release:
     name: Release
@@ -70,6 +71,15 @@ jobs:
             cl-x86_64-unknown-linux-gnu,
             cl-aarch64-unknown-linux-gnu,
           ]
+        include:
+          - goos: unknown-linux-gnu
+            goarch: x86-64
+          - goos: unknown-linux-gnu
+            goarch: aarch64
+          - goos: apple-darwin
+            goarch: x86-64
+          - goos: apple-darwin
+            goarch: aarch64
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -80,6 +90,11 @@ jobs:
           path: target/${{ matrix.target }}/release/
       - name: Set up Go
         uses: actions/setup-go@v3
+      - name: Install yq
+        uses: mikefarah/yq@v4.35.1
+      - name: Updates goreleaser.yaml
+        run: |
+          .github/utils/single_target.sh ${{ matrix.goos }} ${{ matrix.goarch }}
       - name: Release binaries
         uses: goreleaser/goreleaser-action@v4
         with:
