@@ -85,10 +85,7 @@ jobs:
       - name: Create checksum
         run: |
           cd target/artifacts
-          touch checksum.txt
-          for FILE in $(ls -1); do
-            shasum -a 256 $FILE >> checksum.txt
-          done
+          shasum -a 256 * >> checksum.txt
           cat checksum.txt
 
       - name: check artifacts
