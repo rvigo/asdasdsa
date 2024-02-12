@@ -85,8 +85,9 @@ jobs:
       - name: Create checksum
         run: |
           cd target/artifacts
-          shasum -a 256 * >> checksum.txt
-          cat checksum.txt
+          for file in *; do
+            shasum -a 256 $file > $(basename $file .tar.gz).sha256
+          done
 
       - name: check artifacts
         run: ls -latr target/artifacts 
