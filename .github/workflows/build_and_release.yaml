@@ -80,6 +80,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: target/artifacts
+          merge-multiple: true
 
       - name: check artifacts
         run: ls -latr target/artifacts 
