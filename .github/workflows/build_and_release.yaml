@@ -82,5 +82,14 @@ jobs:
           path: target/artifacts
           merge-multiple: true
 
+      - name: Create checksum
+        run: |
+          cd target/artifacts
+          touch checksum.txt
+          for FILE in $(ls -1); do
+            shasum -a 256 $FILE >> checksum.txt
+          done
+          cat checksum.txt
+
       - name: check artifacts
         run: ls -latr target/artifacts 
