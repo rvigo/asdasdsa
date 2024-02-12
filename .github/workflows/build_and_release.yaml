@@ -99,3 +99,4 @@ jobs:
           token:  ${{ secrets.GH_TOKEN }}
           tap: rvigo/homebrew-asdasdsa
           formula: asdasdsa
+          revision: ${{github.sha}}
