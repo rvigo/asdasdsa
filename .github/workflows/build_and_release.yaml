@@ -82,6 +82,12 @@ jobs:
         with:
           path: target/artifacts
           merge-multiple: true
+      - name: tmp cs
+        run: |
+          cd target/artifacts
+          shasum -a 256 * >> checksums.txt
+          cat checksums.txt
+          rm -f checksums.txt
 
       - name: Create checksum
         run: |
@@ -99,4 +105,4 @@ jobs:
           token:  ${{ secrets.GH_TOKEN }}
           tap: rvigo/homebrew-asdasdsa
           formula: asdasdsa
-          revision: ${{github.sha}}
+          revision: ${{ github.sha }}
