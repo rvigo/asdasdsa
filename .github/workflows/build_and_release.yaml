@@ -109,9 +109,10 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
             
       - name: Update Homebrew formula
-        uses: dawidd6/action-homebrew-bump-formula@v3
+        uses: mislav/bump-homebrew-formula-action@v3
         with:
-          token:  ${{ secrets.GH_TOKEN }}
-          tap: rvigo/homebrew-asdasdsa
-          formula: asdasdsa
-          revision: ${{ github.sha }}
+          formula-path: asdasdsa.rb
+          homebrew-tap: rvigo/homebrew-asdasdsa
+          formula-name: asdasdsa
+        env:
+          COMMITTER_TOKEN: ${{ secrets.GH_TOKEN }}
