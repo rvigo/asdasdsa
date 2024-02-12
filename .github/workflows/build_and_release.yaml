@@ -54,7 +54,7 @@ jobs:
 
       - name: Create tar.gz file
         run: |
-          tar -czvf cl-${{ matrix.binary_name }}.tar.gz target/${{ matrix.target }}/release/cl-${{ matrix.binary_name }}
+          tar -czvf target/${{ matrix.target }}/release/cl-${{ matrix.binary_name }}.tar.gz -C target/${{ matrix.target }}/release/ cl-${{ matrix.binary_name }}
 
       - name: check tar.gz file 
         run: ls -latr target/${{ matrix.target }}/release
