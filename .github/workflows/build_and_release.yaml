@@ -1,3 +1,4 @@
+
 name: Build & Release
 
 permissions:
@@ -5,82 +6,80 @@ permissions:
 
 on:
   push:
-    tags:
-      - "v*"
 
 jobs:
-  # check:
-  #   name: Check
-  #   uses: rvigo/asdasdsa/.github/workflows/check.yaml@main
-
   build:
     name: Build
-    # needs: [check]
     runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
-        target: [x86_64-apple-darwin, x86_64-unknown-linux-gnu]
+        target:
+          [
+            x86_64-apple-darwin,
+            aarch64-unknown-linux-gnu,
+            x86_64-unknown-linux-gnu,
+            aarch64-apple-darwin,
+          ]
 
         include:
           - target: x86_64-apple-darwin
             os: macos
+            binary_name: cl_${{ github.ref_name }}_darwin_amd64
           - target: x86_64-unknown-linux-gnu
             os: ubuntu
+            binary_name: cl_${{ github.ref_name }}_linux_amd64
+          - target: aarch64-unknown-linux-gnu
+            os: ubuntu
+            binary_name: cl_${{ github.ref_name }}_linux_arm64
+          - target: aarch64-apple-darwin
+            os: macos
+            binary_name: cl_${{ github.ref_name }}_darwin_arm64
     steps:
-      - name: Install toolchain for ${{ matrix.target }}
-        uses: dtolnay/rust-toolchain@1.67.0
-        with:
-          targets: ${{ matrix.target }}
-      - name: Cache Cargo
-        uses: Swatinem/rust-cache@v2
       - name: Checkout
-        uses: actions/checkout@v3
-      - name: Build
-        run: |
-          if [ ${{ matrix.os }} == 'ubuntu' ]; then
-            cargo install cross
-            cross build --release --bins --target ${{ matrix.target }}
-          else
-            cargo build --release --bins --target ${{ matrix.target }}
-          fi
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/checkout@v4
         with:
-          name: cl-${{ matrix.target }}
-          path: target/${{ matrix.target }}/release/
-          retention-days: 1
+          fetch-depth: 0
+
+      - name: Fake executable
+        run: |
+          mkdir -p target/${{ matrix.target }}/release
+          touch target/${{ matrix.target }}/release/cl
+
+      - name: rename binary
+        run: |
+            mv target/${{ matrix.target }}/release/cl target/${{ matrix.target }}/release/cl-${{ matrix.binary_name }}
+
+      - name: check binary name 
+        run: ls -latr target/${{ matrix.target }}/release
+
+      - name: Create tar.gz file
+        run: |
+          tar -czvf cl-${{ matrix.binary_name }}.tar.gz target/${{ matrix.target }}/release/cl-${{ matrix.binary_name }}
+
+      - name: check tar.gz file 
+        run: ls -latr target/${{ matrix.target }}/release
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: cl-${{ matrix.binary_name }}.tar.gz
+          path: target/${{ matrix.target }}/release/cl-${{ matrix.binary_name }}.tar.gz
+          if-no-files-found: error
 
   release:
     name: Release
     needs: build
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        target: [cl-x86_64-apple-darwin, cl-x86_64-unknown-linux-gnu]
-        include:
-          - goos: unknown-linux-gnu
-            goarch: amd64
-          - goos: darwin
-            goarch: amd64
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-      - name: Download ${{ matrix.target }}
-        uses: actions/download-artifact@v3
+        uses: actions/checkout@v4
         with:
-          name: ${{ matrix.target }}
-          path: target/${{ matrix.target }}/release/
-      - name: Set up Go
-        uses: actions/setup-go@v3
-      - name: Install yq
-        uses: mikefarah/yq@v4.35.1
-      - name: Updates goreleaser.yaml
-        run: |
-          .github/utils/single_target.sh ${{ matrix.goos }} ${{ matrix.goarch }}
-      - name: Release binaries
-        uses: goreleaser/goreleaser-action@v4
+          fetch-depth: 0
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
         with:
-          version: latest
-          args: release --skip-validate
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          path: target/artifacts
+
+      - name: check artifacts
+        run: ls -latr target/artifacts 
