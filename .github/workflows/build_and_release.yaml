@@ -91,3 +91,10 @@ jobs:
 
       - name: check artifacts
         run: ls -latr target/artifacts 
+
+      - name: Update Homebrew formula
+        uses: dawidd6/action-homebrew-bump-formula@v3
+        with:
+          token:  ${{ secrets.GH_TOKEN }}
+          tap: rvigo/homebrew-asdasdsa
+          formula: asdasdsa
