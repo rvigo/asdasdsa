@@ -1,0 +1,34 @@
+build:
+  arch:
+  - x86_64
+  - aarch64
+  os:
+  - linux
+  - darwin
+  binary: rustreleaser
+release:
+  owner: rvigo
+  repo: asdasdsa
+  prerelease: false
+  draft: false
+  target_branch: main
+  name: v0.0.3
+  body: |-
+    This is a test release
+
+brew:
+  name: asdasdsa
+  description: brew formula
+  homepage: https://github.com/rvigo/asdasdsa 
+  license: MIT
+  head: main
+  install: |-
+    bin.install "asdasdsa"
+  test: |-
+    asdasdsa --version
+  repository:
+    owner: rvigo 
+    name: homebrew-asdasdsa
+  commit_author:
+    name: "Rafael Vigo"
+    email: "rvig07+github@gmail.com"
