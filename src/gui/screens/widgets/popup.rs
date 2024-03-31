@@ -84,7 +84,7 @@ impl Popup {
         };
         Layout::default()
             .direction(Direction::Horizontal)
-            .constraints(constraints.as_ref())
+            .constraints(constraints)
             .split(layout[0])
     }
 

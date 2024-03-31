@@ -23,8 +23,6 @@ macro_rules! load_commands {
     }};
 }
 
-pub use load_commands;
-
 /// Custom FileSystem Wrapper
 pub(super) mod fs_wrapper {
     use super::errors::FileError;
