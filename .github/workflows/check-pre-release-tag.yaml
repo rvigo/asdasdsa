@@ -2,9 +2,9 @@ name: release-automated
 on:
   push:
     tag: 
-      - v*.*.*-beta
-      - v*.*.*.beta.*
-      - "!v*.*.*"
+      - 'v*.*.*-beta'
+      - 'v*.*.*-alpha'
+      - '!v[0-9].[0-9].[0-9]'
 
 jobs:
   check:
@@ -15,7 +15,3 @@ jobs:
         run: |
           echo "Checking tag"
           echo "Tag: ${{ github.ref }}"
-          echo "Tag: ${{ github.event_name }}"
-          echo "Tag: ${{ github.event }}"
-          echo "Tag: ${{ github.event.inputs }}"
-          echo "Tag: ${{ github.event.inputs.tag }}"
