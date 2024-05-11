@@ -1,0 +1,21 @@
+name: release-automated
+on:
+  push:
+    tag: 
+      - v*.*.*-beta
+      - v*.*.*.beta.*
+      - "!v*.*.*"
+
+jobs:
+  check:
+    name: Check tag
+    runs-on: ubuntu-latest
+    steps: 
+      - name: check
+        run: |
+          echo "Checking tag"
+          echo "Tag: ${{ github.ref }}"
+          echo "Tag: ${{ github.event_name }}"
+          echo "Tag: ${{ github.event }}"
+          echo "Tag: ${{ github.event.inputs }}"
+          echo "Tag: ${{ github.event.inputs.tag }}"
