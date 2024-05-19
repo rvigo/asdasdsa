@@ -92,7 +92,7 @@ jobs:
 
   build:
     name: Build
-    needs: [format,test]
+    needs: cache
     runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
