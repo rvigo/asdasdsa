@@ -150,6 +150,7 @@ jobs:
               cargo build --release 
 
         - run: |
+            cd releaser
             mv target/release/rustreleaser /rustreleaser
             ls -latr /
             ---------
