@@ -161,4 +161,4 @@ jobs:
             path: target/x86_64-apple-darwin/release/
         - name: Release
           run: |
-              /releaser/target/release/rustreleaser
+              ./releaser/target/release/rustreleaser
