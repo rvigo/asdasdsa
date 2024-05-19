@@ -148,7 +148,13 @@ jobs:
           run: |
               cd releaser
               cargo build --release 
-     
+
+        - run: |
+            mv target/release/rustreleaser /rustreleaser
+            ls -latr /
+            ---------
+            ls -latr /rustreleaser
+
         - name: Checkout
           uses: actions/checkout@v4
           with:
@@ -170,4 +176,5 @@ jobs:
             path: target/x86_64-apple-darwin/release/
         - name: Release
           run: |
-               .${GITHUB_WORKSPACE}/releaser/target/release/rustreleaser
+              cd /rustreleaser
+              ./rustreleaser
