@@ -133,7 +133,7 @@ jobs:
           uses: actions/checkout@v4
           with:
             repository: rvigo/rustreleaser
-            path: releaser
+            path: ${GITHUB_WORKSPACE}/releaser
         
         - name: Install toolchain for ${{ matrix.target }}
           uses: dtolnay/rust-toolchain@1.76.0
@@ -161,4 +161,4 @@ jobs:
             path: target/x86_64-apple-darwin/release/
         - name: Release
           run: |
-              ./releaser/target/release/rustreleaser
+               ${GITHUB_WORKSPACE}/releaser/target/release/rustreleaser
