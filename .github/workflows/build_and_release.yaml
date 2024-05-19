@@ -136,6 +136,7 @@ jobs:
             path: releaser
         - run: |
             pwd
+            cd releaser
             ls -latr 
 
         
@@ -167,4 +168,4 @@ jobs:
             path: target/x86_64-apple-darwin/release/
         - name: Release
           run: |
-               ./${GITHUB_WORKSPACE}/releaser/target/release/rustreleaser
+               .${GITHUB_WORKSPACE}/releaser/target/release/rustreleaser
