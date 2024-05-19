@@ -148,13 +148,15 @@ jobs:
           run: |
               cd releaser
               cargo build --release 
-        - run: |
-            pwd
-            ls -latr
+     
         - name: Checkout
           uses: actions/checkout@v4
           with:
             fetch-depth: 0
+        
+        - run: |
+            pwd
+            ls -latr
 
         - name: Download darwin_arm64
           uses: actions/download-artifact@v3
