@@ -145,3 +145,41 @@ jobs:
           name: ${{ env.BINARY_NAME }}.tar.gz
           path: target/${{ matrix.target }}/release/${{ env.BINARY_NAME }}.tar.gz
           if-no-files-found: error
+  release:
+      name: Release
+      needs: build
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout releaser
+          uses: actions/checkout@v4
+          with:
+            repository: rvigo/rustreleaser
+            path: releaser
+        
+        - name: Install toolchain for ${{ matrix.target }}
+          uses: dtolnay/rust-toolchain@1.76.0
+          with:
+            targets: ${{ matrix.target }}
+        - name: Build releaser
+          run: |
+              cd releaser
+              cargo build --release 
+
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+
+        - name: Download darwin_arm64
+          uses: actions/download-artifact@v3
+          with:
+            name: cl-aarch64-apple-darwin
+            path: target/aarch64-apple-darwin/release/
+        - name: Download darwin_amd64_v1
+          uses: actions/download-artifact@v3
+          with:
+            name: cl-x86_64-apple-darwin
+            path: target/x86_64-apple-darwin/release/
+        - name: Release
+          run: |
+              release/target/release/rustreleaser
