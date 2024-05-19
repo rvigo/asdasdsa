@@ -92,7 +92,6 @@ jobs:
 
   build:
     name: Build
-    needs: cache
     runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
@@ -162,4 +161,4 @@ jobs:
             path: target/x86_64-apple-darwin/release/
         - name: Release
           run: |
-              release/target/release/rustreleaser
+              /releaser/target/release/rustreleaser
