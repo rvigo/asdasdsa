@@ -83,6 +83,11 @@ jobs:
           with:
             name: cl-x86_64-apple-darwin
             path: target/x86_64-apple-darwin/release/
+        
+        - run: |
+            ls -latr target
+            ls -latr target/aarch64-apple-darwin/release/
+            ls -latr target/x86_64-apple-darwin/release/
         - name: Release
           run: |
               rustreleaser
