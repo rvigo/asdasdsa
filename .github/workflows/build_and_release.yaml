@@ -39,7 +39,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: cl-${{ matrix.target }}
+          name: asdasdsa-${{ matrix.target }}
           path: target/${{ matrix.target }}/release/
         
   release:
@@ -76,12 +76,12 @@ jobs:
         - name: Download darwin_arm64
           uses: actions/download-artifact@v3
           with:
-            name: cl-aarch64-apple-darwin
+            name: asdasdsa-aarch64-apple-darwin
             path: target/aarch64-apple-darwin/release/
         - name: Download darwin_amd64_v1
           uses: actions/download-artifact@v3
           with:
-            name: cl-x86_64-apple-darwin
+            name: asdasdsa-x86_64-apple-darwin
             path: target/x86_64-apple-darwin/release/
         
         - run: |

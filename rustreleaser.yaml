@@ -1,19 +1,20 @@
 build:
   binary: asdasdsa
   prebuilt:
-    - path: ./target/x86_64-apple-darwin/release/asdasdsa
+    - path: ./target/release/asdasdsa-x86_64-apple-darwin
       arch: amd64
       os: darwin
-    - path: ./target/aarch64-apple-darwin/release/asdasdsa
+    - path: ./target/release/asdasdsa-aarch64-apple-darwin
       arch: aarch64
       os: darwin
+  
 release:
   owner: rvigo
   repo: asdasdsa
   prerelease: false
   draft: false
   target_branch: main
-  name: v1.1.12
+  name: v2.0.0
 
 brew:
   name: asdasdsa
