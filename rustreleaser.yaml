@@ -3,7 +3,7 @@ build:
   prebuilt:
     - path: ./target/x86_64-unknown-linux-gnu/release/asdasdsa
       arch: amd64
-      os: ubuntu 
+      os: linux
   
 release:
   owner: rvigo
