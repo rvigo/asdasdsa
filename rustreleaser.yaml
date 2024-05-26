@@ -1,9 +1,13 @@
 build:
   binary: asdasdsa
   prebuilt:
-    - path: ./target/x86_64-unknown-linux-gnu/release/asdasdsa
+    - path: ./target/x86_64-unknown-linux-gnu/release/
       arch: amd64
       os: linux
+    - path: ./target/aarch64-apple-darwin/release/
+      arch: arm64
+      os: darwin
+
   
 release:
   owner: rvigo
@@ -11,7 +15,6 @@ release:
   prerelease: false
   draft: false
   target_branch: main
-  name: v2.0.0
 
 brew:
   name: asdasdsa
@@ -23,6 +26,4 @@ brew:
   repository:
     owner: rvigo 
     name: homebrew-asdasdsa
-  commit_author:
-    name: "Rafael Vigo"
-    email: "rvig07+github@gmail.com"
+  
