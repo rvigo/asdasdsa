@@ -13,7 +13,8 @@ brew:
   head: 
     url: https://github.com/rvigo/asdasdsa.git
     branch: main
-  install: bin.install "asdasdsa"
+  install: |
+    system "cargo", "install", *std_cargo_args
   repository:
     owner: rvigo 
     name: homebrew-asdasdsa
