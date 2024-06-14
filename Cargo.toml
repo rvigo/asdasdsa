@@ -10,12 +10,3 @@ description = "Group your commands and aliases in an organized and human readabl
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-
-[profile.release]
-opt-level = 3
-strip = "symbols"
-lto = "thin"
-panic = "abort"
-
-[profile.dev]
-panic = "abort"

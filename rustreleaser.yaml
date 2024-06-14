@@ -1,14 +1,3 @@
-build:
-  binary: asdasdsa
-  prebuilt:
-    - path: ./target/x86_64-unknown-linux-gnu/release/asdasdsa
-      arch: amd64
-      os: linux
-    - path: ./target/aarch64-apple-darwin/release/asdasdsa
-      arch: arm64
-      os: darwin
-
-  
 release:
   owner: rvigo
   repo: asdasdsa
@@ -21,7 +10,9 @@ brew:
   description: brew formula
   homepage: https://github.com/rvigo/asdasdsa 
   license: MIT
-  head: main
+  head: 
+    url: https://github.com/rvigo/asdasdsa.git
+    branch: main
   install: bin.install "asdasdsa"
   repository:
     owner: rvigo 
