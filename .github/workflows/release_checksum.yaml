@@ -1,0 +1,46 @@
+name: Release checksums
+
+on:
+  release:
+    types: [published]
+
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Git tag to generate checksum for (e.g. v1.2.3)"
+        required: true
+        type: string
+
+jobs:
+  checksum:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Resolve tag and zip URL
+        id: vars
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            echo "TAG=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+            echo "ZIP_URL=${{ github.event.release.zipball_url }}" >> $GITHUB_ENV
+          else
+            echo "TAG=${{ inputs.tag }}" >> $GITHUB_ENV
+            echo "ZIP_URL=https://api.github.com/repos/${{ github.repository }}/zipball/${{ inputs.tag }}" >> $GITHUB_ENV
+          fi
+
+      - name: Download source zip
+        run: |
+          curl -L \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            -o source.zip \
+            "$ZIP_URL"
+
+      - name: Generate SHA-256 checksum
+        run: |
+          sha256sum source.zip > source-code-$TAG.zip.sha256
+
+      - name: Upload checksum to release
+        run: |
+          gh release upload "$TAG" source-code-$TAG.zip.sha256
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
