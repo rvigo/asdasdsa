@@ -13,29 +13,16 @@ jobs:
       name: Release
       runs-on: ubuntu-latest
       steps:
-        - name: Checkout releaser
-          uses: actions/checkout@v4
-          with:
-            repository: rvigo/rustreleaser
-            ref: 'feature/simpler-version'
-        - name: Install toolchain
-          uses: dtolnay/rust-toolchain@1.76.0
-        - name: Build releaser
-          run: |
-              cargo build --release 
-        - run: |
-            ls -latr
-            sudo cp -R ./target/release/rustreleaser /usr/local/bin/. 
-            ls -latr /usr/local/bin
-
-        - name: Checkout
-          uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
-        - run: |
-            ls -latr
-        - name: Release
-          run: |
-              rustreleaser
-          env:
-            GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+         - name: Generate checksum
+           uses: jmgilman/actions-generate-checksum@v1
+           with:
+            patterns: |
+              release/*.zip
+              release/*.tar.gz
+         - name: Create release
+           uses: softprops/action-gh-release@v1
+           with:
+             files: |
+               checksum.txt
+               release/*.zip
+               release/*.tar.gz
