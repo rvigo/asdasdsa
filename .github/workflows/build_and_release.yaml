@@ -19,6 +19,8 @@ jobs:
             patterns: |
               release/*.zip
               release/*.tar.gz
+         - run: |
+             ls -l 
          - name: Create release
            uses: softprops/action-gh-release@v1
            with:
