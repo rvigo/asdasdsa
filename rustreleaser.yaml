@@ -4,18 +4,3 @@ release:
   prerelease: false
   draft: false
   target_branch: main
-
-brew:
-  name: asdasdsa
-  description: brew formula
-  homepage: https://github.com/rvigo/asdasdsa 
-  license: MIT
-  head: 
-    url: https://github.com/rvigo/asdasdsa.git
-    branch: main
-  install: |
-    system "cargo", "install", *std_cargo_args
-  repository:
-    owner: rvigo 
-    name: homebrew-asdasdsa
-  
