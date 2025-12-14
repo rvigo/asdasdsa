@@ -38,6 +38,7 @@ jobs:
 
       - name: Upload checksum to release
         run: |
+          UPLOAD_URL=$(echo "${{ github.event.release.upload_url }}" | sed 's/{.*}//')
           echo $UPLOAD_URL
           curl -X POST "$UPLOAD_URL?name=source-code-$TAG.zip.sha256" \
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
