@@ -38,6 +38,8 @@ jobs:
 
       - name: Upload checksum to release
         run: |
-          gh release upload "$TAG" source-code-$TAG.zip.sha256
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Content-Type: application/octet-stream" \
+            --data-binary @source-code-$TAG.zip.sha256 \
+            "$UPLOAD_URL?name=source-code-$TAG.zip.sha256"
