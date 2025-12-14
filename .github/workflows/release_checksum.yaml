@@ -5,11 +5,6 @@ on:
     types: [published]
 
   workflow_dispatch:
-    inputs:
-      tag:
-        description: "Git tag to generate checksum for (e.g. v1.2.3)"
-        required: true
-        type: string
 
 jobs:
   checksum:
@@ -38,6 +33,7 @@ jobs:
       - name: Generate SHA-256 checksum
         run: |
           sha256sum source.zip > source-code-$TAG.zip.sha256
+          cat source-code-$TAG.zip.sha256
 
       - name: Upload checksum to release
         run: |
