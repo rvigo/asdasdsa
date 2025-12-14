@@ -39,7 +39,7 @@ jobs:
       - name: Upload checksum to release
         run: |
           curl -X POST \
+            "$UPLOAD_URL?name=source-code-$TAG.zip.sha256" \
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -H "Content-Type: application/octet-stream" \
-            --data-binary @source-code-$TAG.zip.sha256 \
-            "$UPLOAD_URL?name=source-code-$TAG.zip.sha256"
+            --data-binary @source-code-$TAG.zip.sha256 
