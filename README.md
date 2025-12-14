@@ -59,4 +59,4 @@ $ cl share export --namespace git
 # the command bellow will import all aliases from a file in the specified location. 
 # you can also choose which namespace will be imported
 $ cl share import -f `path/to/shared.toml`
-```
+```    
