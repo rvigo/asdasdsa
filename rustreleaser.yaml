@@ -1,6 +1,0 @@
-release:
-  owner: rvigo
-  repo: asdasdsa
-  prerelease: false
-  draft: false
-  target_branch: main

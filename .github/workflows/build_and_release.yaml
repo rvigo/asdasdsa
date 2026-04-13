@@ -1,4 +1,4 @@
-name: Build & Release
+name: Release
 
 permissions:
   contents: write
@@ -11,22 +11,67 @@ on:
 
 
 jobs:
+  format:
+    name: fmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.76.0
+        with:
+          components: rustfmt
+      - run: cargo fmt --all -- --check
+
+  clippy:
+    name: clippy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.76.0
+        with:
+          components: clippy
+      - run: cargo clippy -- -D warnings
+
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.76.0
+      - run: cargo test
+        env:
+          RUST_BACKTRACE: 1
+
   release:
-      name: Release
-      runs-on: ubuntu-latest
-      steps:
-         - name: Generate checksum
-           uses: jmgilman/actions-generate-checksum@v1
-           with:
-            patterns: |
-              release/*.zip
-              release/*.tar.gz
-         - run: |
-             ls -l 
-         - name: Create release
-           uses: softprops/action-gh-release@v1
-           with:
-             files: |
-               checksum.txt
-               release/*.zip
-               release/*.tar.gz
+    name: Release
+    needs: [format, clippy, test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate checksums
+        run: |
+          TAG=${GITHUB_REF_NAME}
+          curl -fsSL "https://github.com/rvigo/asdasdsa/archive/refs/tags/${TAG}.tar.gz" \
+            -o "asdasdsa-${TAG}.tar.gz"
+          sha256sum "asdasdsa-${TAG}.tar.gz" > checksums.txt
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            checksums.txt \
+            --generate-notes
+
+      - name: Trigger homebrew-asdasdsa formula update
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          SHA256=$(awk '{print $1}' checksums.txt)
+          gh api repos/rvigo/homebrew-asdasdsa/dispatches \
+            --method POST \
+            --field event_type=new-release \
+            --field "client_payload[tag]=${GITHUB_REF_NAME}" \
+            --field "client_payload[sha256]=${SHA256}"
